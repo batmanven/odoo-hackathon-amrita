@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
           )}
 
           <div>
-            <Input 
+            <Input
               type="email"
               name="email"
               placeholder="Email Address"
@@ -54,11 +54,11 @@ export default function ForgotPasswordPage() {
             />
           </div>
 
-         <div className="pt-2">
-  <Button
-    type="submit"
-    disabled={isPending}
-    className="
+          <div className="pt-2">
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="
       w-full py-5 text-md font-medium
       cursor-pointer
       transition-all duration-200
@@ -67,10 +67,10 @@ export default function ForgotPasswordPage() {
       active:scale-[0.98]
       disabled:cursor-not-allowed
     "
-  >
-    {isPending ? 'Sending...' : 'Send Reset Link'}
-  </Button>
-</div>
+            >
+              {isPending ? 'Sending...' : 'Send Reset Link'}
+            </Button>
+          </div>
         </form>
 
         <div className="mt-6 text-sm text-gray-600">

@@ -39,8 +39,6 @@ export async function loginAction(prevState: any, formData: FormData) {
       data: { avatarBase64 }
     })
   }
-
-  // Issue Custom JWT session
   await setSession(user.id)
 
   revalidatePath('/', 'layout')
@@ -79,16 +77,13 @@ export async function signupAction(prevState: any, formData: FormData) {
     return { error: parsed.error.issues[0].message }
   }
 
-  // Check existing user locally
   const existingUser = await prisma.user.findUnique({ where: { email: data.email } })
   if (existingUser) {
     return { error: 'Email already in use' }
   }
 
-  // Hash password locally
   const passwordHash = await hashPassword(data.password)
 
-  // Save to Local SQLite
   const user = await prisma.user.create({
     data: {
       email: data.email,
@@ -104,7 +99,7 @@ export async function signupAction(prevState: any, formData: FormData) {
     }
   })
 
-  // Issue Custom JWT session
+
   await setSession(user.id)
 
   revalidatePath('/', 'layout')
@@ -113,19 +108,15 @@ export async function signupAction(prevState: any, formData: FormData) {
 
 export async function resetPasswordAction(prevState: any, formData: FormData) {
   const email = formData.get('email') as string
-  
+
   if (!email || !z.string().email().safeParse(email).success) {
     return { error: 'Please enter a valid email address' }
   }
-  
-  // Custom local logic for forgot password
+
   const user = await prisma.user.findUnique({ where: { email } })
   if (!user) {
-    // Security best practice: don't reveal if email exists or not
     return { success: 'If an account exists, you will receive an email with reset instructions.' }
   }
-
-  // In a real app we'd trigger an email service here. For the hackathon local setup, we simulate.
   console.log(`[HACKATHON] Local password reset link generated for: ${email}`)
 
   return { success: 'If an account exists, you will receive an email with reset instructions.' }
