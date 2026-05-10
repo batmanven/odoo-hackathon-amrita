@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  passwordHash   String
+  firstName      String
+  lastName       String
+  phone          String?
+  city           String?
+  country        String?
+  avatarBase64   String?
+  additionalInfo String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  trips Trip[]
+  posts CommunityPost[]
+}
+
+model Trip {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  startDate   DateTime
+  endDate     DateTime
+  budget      Float?
+  description String?
+  imageUrl    String?
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stops       TripStop[]
+  expenses    TripExpense[]
+  packingList PackingItem[]
+  notes       TripNote[]
+}
+
+model City {
+  id          String  @id @default(cuid())
+  name        String
+  country     String
+  description String?
+  imageUrl    String?
+
+  stops      TripStop[]
+  activities Activity[]
+}
+
+model TripStop {
+  id        String   @id @default(cuid())
+  tripId    String
+  cityId    String
+  order     Int
+  arrival   DateTime
+  departure DateTime
+  notes     String?
+
+  trip       Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  city       City           @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  activities StopActivity[]
+}
+
+model Activity {
+  id          String  @id @default(cuid())
+  cityId      String
+  name        String
+  description String?
+  cost        Float?
+  category    String?
+
+  city      City           @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  tripStops StopActivity[]
+}
+
+model StopActivity {
+  id          String    @id @default(cuid())
+  stopId      String
+  activityId  String
+  plannedDate DateTime?
+
+  stop     TripStop @relation(fields: [stopId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+}
+
+model TripExpense {
+  id          String   @id @default(cuid())
+  tripId      String
+  amount      Float
+  category    String
+  description String?
+  date        DateTime @default(now())
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model PackingItem {
+  id       String  @id @default(cuid())
+  tripId   String
+  name     String
+  isPacked Boolean @default(false)
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model TripNote {
+  id        String   @id @default(cuid())
+  tripId    String
+  content   String
+  createdAt DateTime @default(now())
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model CommunityPost {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  content   String
+  likes     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
