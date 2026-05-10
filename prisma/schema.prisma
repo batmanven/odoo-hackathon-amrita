@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -16,6 +16,7 @@ model User {
   phone          String?
   city           String?
   country        String?
+  role           String   @default("user")
   avatarBase64   String?
   additionalInfo String?
   createdAt      DateTime @default(now())
@@ -57,17 +58,19 @@ model City {
 }
 
 model TripStop {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   tripId    String
   cityId    String
   order     Int
-  arrival   DateTime
-  departure DateTime
+  arrival   DateTime?
+  departure DateTime?
+  budget    Float?
   notes     String?
 
   trip       Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
   city       City           @relation(fields: [cityId], references: [id], onDelete: Restrict)
   activities StopActivity[]
+  tripNotes  TripNote[]
 }
 
 model Activity {
@@ -83,13 +86,16 @@ model Activity {
 }
 
 model StopActivity {
-  id          String    @id @default(cuid())
+  id          String  @id @default(cuid())
   stopId      String
-  activityId  String
-  plannedDate DateTime?
+  activityId  String?
+  name        String?
+  plannedTime String?
+  cost        Float?
+  order       Int     @default(0)
 
-  stop     TripStop @relation(fields: [stopId], references: [id], onDelete: Cascade)
-  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  stop     TripStop  @relation(fields: [stopId], references: [id], onDelete: Cascade)
+  activity Activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
 
 model TripExpense {
@@ -107,6 +113,7 @@ model PackingItem {
   id       String  @id @default(cuid())
   tripId   String
   name     String
+  category String  @default("general")
   isPacked Boolean @default(false)
 
   trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
@@ -115,10 +122,12 @@ model PackingItem {
 model TripNote {
   id        String   @id @default(cuid())
   tripId    String
+  stopId    String?
   content   String
   createdAt DateTime @default(now())
 
-  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  trip Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  stop TripStop? @relation(fields: [stopId], references: [id], onDelete: SetNull)
 }
 
 model CommunityPost {
