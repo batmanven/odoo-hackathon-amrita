@@ -19,35 +19,61 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-[#FDFCFD] font-sans text-[#1C1C1C] selection:bg-[#714B67]/10 overflow-x-hidden">
-      <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#714B67] rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-[#714B67]/20">
-              <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </div>
-            <span className="text-xl sm:text-2xl font-black tracking-tight text-[#2C2C2C]">Traveloop</span>
+      <header className="fixed top-0 w-full z-50 border-b border-gray-100 bg-white/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+
+          {/* LEFT */}
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#714B67] to-[#8A5B7F] flex items-center justify-center shadow-lg shadow-[#714B67]/20 transition-transform group-hover:scale-105">
+                <Compass className="w-5 h-5 text-white" />
+              </div>
+
+              <span className="text-2xl font-black tracking-tight text-[#1F1F1F]">
+                Traveloop
+              </span>
+            </Link>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-8">
+          {/* RIGHT */}
+          <div className="flex items-center gap-4">
             {user ? (
-              <div className="flex items-center gap-3 sm:gap-5">
-                <Link href="/dashboard" className="hidden xs:flex items-center gap-2 text-xs sm:text-sm font-bold text-gray-600 hover:text-[#714B67] transition-colors group">
+              <>
+                <Link
+                  href="/dashboard"
+                  className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[#F6F2F5] hover:bg-[#EEE6EC] text-[#714B67] font-bold text-sm transition-all duration-300"
+                >
                   <LayoutDashboard className="w-4 h-4" />
-                  <span className="hidden sm:inline">Dashboard</span>
+                  Dashboard
                 </Link>
+
                 <Link href="/dashboard/profile">
-                  <Avatar className="h-8 w-8 sm:h-10 ring-2 ring-gray-100 ring-offset-2 transition-transform hover:scale-105 active:scale-95">
-                    <AvatarImage src={user.avatarBase64 || ''} alt={user.firstName} className="object-cover" />
-                    <AvatarFallback className="bg-[#714B67]/10 text-[#714B67] font-bold text-xs">
-                      {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                  <Avatar className="h-11 w-11 ring-2 ring-[#714B67]/10 ring-offset-2 hover:scale-105 transition-transform cursor-pointer">
+                    <AvatarImage
+                      src={user.avatarBase64 || ''}
+                      alt={user.firstName}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="bg-[#714B67] text-white font-bold">
+                      {user.firstName.charAt(0)}
+                      {user.lastName.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                 </Link>
-              </div>
+              </>
             ) : (
-              <div className="flex items-center gap-3 sm:gap-6">
-                <Link href="/login" className="text-sm font-bold text-gray-500 hover:text-[#714B67] transition-colors">Login</Link>
-                <Link href="/register" className="bg-[#714B67] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold hover:bg-[#5E3D55] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[#714B67]/20 whitespace-nowrap">
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/login"
+                  className="text-sm font-semibold text-gray-600 hover:text-[#714B67] transition-colors"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  href="/register"
+                  className="bg-[#714B67] hover:bg-[#5E3D55] text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-[#714B67]/20 transition-all hover:scale-105"
+                >
                   Get Started
                 </Link>
               </div>
@@ -70,8 +96,8 @@ export default async function Home() {
 
           <div className="relative mb-12 sm:mb-20 max-w-4xl mx-auto">
             <p className={`${caveat.className} text-2xl sm:text-4xl md:text-6xl font-bold text-[#212529] tracking-tight`}>
-              Simple, efficient, yet <span className="relative inline-block px-1">
-                affordable!
+              Everything your trip needs, <span className="relative inline-block px-1">
+                in one place
                 <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-[#4CA5FF]" preserveAspectRatio="none" viewBox="0 0 100 10" fill="none">
                   <path d="M0 5C20 2 80 8 100 5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                 </svg>
