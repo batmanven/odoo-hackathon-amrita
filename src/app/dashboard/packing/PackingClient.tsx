@@ -88,20 +88,16 @@ export default function PackingClient({
     if (!newItemName.trim()) { toast.error('Enter an item name'); return }
     setIsAdding(true)
     try {
-      await addPackingItemAction({
+      const res = await addPackingItemAction({
         tripId: selectedTripId,
         name: newItemName.trim(),
         category: newItemCategory
       })
-      setItems(prev => [...prev, {
-        id: `temp-${Date.now()}`,
-        tripId: selectedTripId,
-        name: newItemName.trim(),
-        category: newItemCategory,
-        isPacked: false
-      }])
-      setNewItemName('')
-      toast.success('Item added')
+      if (res.success && res.item) {
+        setItems(prev => [...prev, res.item as PackingItem])
+        setNewItemName('')
+        toast.success('Item added')
+      }
     } catch {
       toast.error('Failed to add')
     } finally {

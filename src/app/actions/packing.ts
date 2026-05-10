@@ -12,7 +12,7 @@ export async function addPackingItemAction(data: {
   const session = await getSession()
   if (!session?.userId) throw new Error('Not authenticated')
 
-  await prisma.packingItem.create({
+  const item = await prisma.packingItem.create({
     data: {
       tripId: data.tripId,
       name: data.name,
@@ -21,7 +21,7 @@ export async function addPackingItemAction(data: {
   })
 
   revalidatePath('/dashboard/packing')
-  return { success: true }
+  return { success: true, item }
 }
 
 export async function togglePackingItemAction(itemId: string, isPacked: boolean) {
