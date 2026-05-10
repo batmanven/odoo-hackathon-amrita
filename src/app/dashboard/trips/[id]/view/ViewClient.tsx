@@ -110,6 +110,12 @@ export default function ViewClient({ trip }: { trip: any }) {
                                 disabled={isToggling}
                             />
                         </div>
+                        <Link href={`/dashboard/trips/${trip.id}/billing`}>
+                            <Button variant="outline" className="rounded-2xl px-6 font-bold border-gray-200 hover:bg-gray-50 text-gray-600 cursor-pointer flex items-center gap-2">
+                                <Wallet className="w-4 h-4" />
+                                Billing
+                            </Button>
+                        </Link>
                         <Link href={`/share/${trip.id}`} target="_blank">
                             <Button variant="outline" className="rounded-2xl px-6 font-bold border-gray-200 hover:bg-gray-50 text-gray-600 cursor-pointer">
                                 Share

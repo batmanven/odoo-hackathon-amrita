@@ -4,7 +4,7 @@
 import { useState, useMemo } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, SlidersHorizontal, Plus, Calendar, MapPin, ArrowRight, X, ArrowUpDown, Trash2, AlertCircle } from 'lucide-react'
+import { Search, SlidersHorizontal, Plus, Calendar, MapPin, ArrowRight, X, ArrowUpDown, Trash2, AlertCircle, Wallet } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { deleteTripAction } from '@/app/actions/trip'
@@ -94,7 +94,7 @@ function TripSection({ title, trips }: { title: string; trips: any[] }) {
                                                 Delete this adventure?
                                             </AlertDialogTitle>
                                             <AlertDialogDescription className="text-center text-gray-500 font-medium leading-relaxed">
-                                                This will permanently remove <span className="font-bold text-gray-900">"{trip.title}"</span> and all its itinerary data. This action cannot be undone.
+                                                This will permanently remove <span className="font-bold text-gray-900">&quot;{trip.title}&quot;</span> and all its itinerary data. This action cannot be undone.
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter className="mt-8 gap-3 sm:justify-center">
@@ -114,6 +114,15 @@ function TripSection({ title, trips }: { title: string; trips: any[] }) {
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
+
+                                <Link href={`/dashboard/trips/${trip.id}/billing`}>
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-2xl h-14 w-14 border-gray-100 hover:bg-gray-50 cursor-pointer shadow-sm transition-colors"
+                                    >
+                                        <Wallet className="h-5 w-5 text-gray-600" />
+                                    </Button>
+                                </Link>
 
                                 <Button asChild className="rounded-2xl px-8 h-14 font-bold group/btn shadow-md hover:shadow-lg transition-all cursor-pointer">
                                     <Link href={`/dashboard/trips/${trip.id}/view`} className="flex items-center gap-2">
