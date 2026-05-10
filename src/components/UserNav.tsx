@@ -21,8 +21,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { LogOut, ChevronDown } from 'lucide-react'
+import { LogOut, ChevronDown, Map } from 'lucide-react'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 interface UserNavProps {
   user: {
@@ -66,6 +67,13 @@ export function UserNav({ user }: UserNavProps) {
               </p>
             </div>
           </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <Link href="/dashboard/trips">
+            <DropdownMenuItem className="cursor-pointer font-medium py-2 px-4">
+              <Map className="mr-2 h-4 w-4" />
+              <span>My Trips</span>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50"
