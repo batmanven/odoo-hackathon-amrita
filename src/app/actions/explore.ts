@@ -11,7 +11,6 @@ export async function addCityToTripAction(data: {
   const session = await getSession()
   if (!session?.userId) throw new Error('Not authenticated')
 
-  // Find or create city
   let city = await prisma.city.findFirst({
     where: { name: data.cityName, country: data.country }
   })
@@ -22,7 +21,6 @@ export async function addCityToTripAction(data: {
     })
   }
 
-  // Get current max order for that trip
   const maxStop = await prisma.tripStop.findFirst({
     where: { tripId: data.tripId },
     orderBy: { order: 'desc' }

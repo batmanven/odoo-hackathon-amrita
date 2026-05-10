@@ -20,7 +20,7 @@ export async function getItineraryAction(tripId: string) {
     return stops.map(stop => ({
       id: stop.id,
       city: stop.city.name + (stop.city.country ? `, ${stop.city.country}` : ''),
-      dates: stop.notes || '', // Using notes as a fallback for dates if arrival/departure aren't formatted
+      dates: stop.notes || '',
       budget: stop.budget?.toString() || '',
       description: stop.notes || '',
       activities: stop.activities.map(act => ({
@@ -38,18 +38,15 @@ export async function getItineraryAction(tripId: string) {
 
 export async function saveItineraryAction(tripId: string, stops: any[]) {
   try {
-    // Start a transaction to ensure atomic updates
     await prisma.$transaction(async (tx) => {
-      // 1. Delete existing stops and their activities (cascading)
       await tx.tripStop.deleteMany({
         where: { tripId }
       })
 
-      // 2. Create new stops and activities
+      //create new stops and activities
       for (let i = 0; i < stops.length; i++) {
         const stopData = stops[i]
 
-        // Find or create the city
         const cityParts = stopData.city.split(',').map((s: string) => s.trim())
         const cityName = cityParts[0]
         const countryName = cityParts[1] || ''
@@ -71,11 +68,9 @@ export async function saveItineraryAction(tripId: string, stops: any[]) {
             order: i,
             budget: stopData.budget ? parseFloat(stopData.budget) : null,
             notes: stopData.description,
-            // You can add logic for actual DateTime arrival/departure here if needed
           }
         })
 
-        // Create activities for this stop
         if (stopData.activities && stopData.activities.length > 0) {
           await tx.stopActivity.createMany({
             data: stopData.activities.map((act: any, actIndex: number) => ({

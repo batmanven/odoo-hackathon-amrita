@@ -3,7 +3,6 @@
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/utils/auth'
 import { revalidatePath } from 'next/cache'
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createTripAction(prevState: any, formData: FormData) {
   const session = await getSession()
