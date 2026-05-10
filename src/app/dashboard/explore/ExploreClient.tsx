@@ -2,7 +2,6 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -50,8 +49,7 @@ const REGION_MAP: Record<string, string[]> = {
 }
 
 export default function ExploreClient({ trips }: { trips: { id: string; title: string }[] }) {
-  const searchParams = useSearchParams()
-  const [query, setQuery] = useState(searchParams.get('q') || '')
+  const [query, setQuery] = useState('')
   const [results, setResults] = useState<CityResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [selectedRegion, setSelectedRegion] = useState('All')
@@ -123,11 +121,13 @@ export default function ExploreClient({ trips }: { trips: { id: string; title: s
   return (
     <div className="max-w-6xl mx-auto space-y-10 pb-20 pt-2 px-4">
 
+      {/* Page Header */}
       <div className="space-y-2">
         <h1 className="text-4xl font-black text-gray-900 tracking-tight">Explore Cities</h1>
         <p className="text-gray-500 font-medium text-lg">Discover destinations and add them to your trips</p>
       </div>
 
+      {/* Search Bar */}
       <section className="relative">
         <div className="relative">
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -147,6 +147,7 @@ export default function ExploreClient({ trips }: { trips: { id: string; title: s
           )}
         </div>
 
+        {/* Search Results Dropdown */}
         {results.length > 0 && (
           <Card className="absolute top-20 left-0 right-0 z-50 rounded-2xl border-none shadow-2xl overflow-hidden max-h-[500px] overflow-y-auto">
             <div className="p-2">
@@ -215,7 +216,7 @@ export default function ExploreClient({ trips }: { trips: { id: string; title: s
         )}
       </section>
 
-
+      {/* Region Filter */}
       <section className="flex flex-wrap gap-3">
         {REGIONS.map(region => (
           <Button
@@ -232,12 +233,13 @@ export default function ExploreClient({ trips }: { trips: { id: string; title: s
         ))}
       </section>
 
+      {/* Popular Cities Grid */}
       <section className="space-y-6">
         <h2 className="text-2xl font-black text-gray-900 tracking-tight">Popular Destinations</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredPopular.map((city) => (
             <Card key={city.name} className="group rounded-3xl border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden bg-white">
-
+              {/* City Image */}
               <div className="relative h-40 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={city.image} alt={city.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -248,6 +250,7 @@ export default function ExploreClient({ trips }: { trips: { id: string; title: s
                 </div>
               </div>
 
+              {/* Meta Info */}
               <div className="p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">

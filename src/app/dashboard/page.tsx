@@ -1,11 +1,11 @@
 import { getSession } from '@/utils/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
+import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Plus, Wallet, Map, Compass } from 'lucide-react'
+import { Search, SlidersHorizontal, Plus, Wallet, Map, Compass } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import DashboardSearch from './DashboardSearch'
 
 export default async function DashboardPage() {
   const session = await getSession()
@@ -97,7 +97,26 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      <DashboardSearch />
+      <section className="flex flex-col md:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Input
+            placeholder="Search destinations, trips..."
+            className="pl-12 h-14 text-base bg-white border-gray-200 rounded-xl shadow-sm focus-visible:ring-primary cursor-text"
+          />
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="outline" className="h-14 px-6 rounded-xl border-gray-200 bg-white shadow-sm hover:bg-gray-50 text-gray-700 font-medium cursor-pointer">
+            Group by
+          </Button>
+          <Button variant="outline" className="h-14 px-6 rounded-xl border-gray-200 bg-white shadow-sm hover:bg-gray-50 text-gray-700 font-medium cursor-pointer">
+            <SlidersHorizontal className="mr-2 h-4 w-4" /> Filter
+          </Button>
+          <Button variant="outline" className="h-14 px-6 rounded-xl border-gray-200 bg-white shadow-sm hover:bg-gray-50 text-gray-700 font-medium cursor-pointer">
+            Sort by...
+          </Button>
+        </div>
+      </section>
 
       <section>
         <div className="flex items-center gap-4 mb-6">
@@ -107,17 +126,13 @@ export default async function DashboardPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {regions.map((region, i) => (
-            <Link
-              key={i}
-              href={`/dashboard/explore?q=${encodeURIComponent(region.name.split(',')[0])}`}
-              className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100"
-            >
+            <div key={i} className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
               <Image src={region.image} alt={region.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
               <div className="absolute bottom-5 left-5 right-5 text-white font-semibold text-lg tracking-wide">
                 {region.name}
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </section>

@@ -34,7 +34,7 @@ export default function BillingClient({ trip }: { trip: any }) {
 
    const subtotal = trip.expenses.reduce((sum: number, exp: any) => sum + exp.amount, 0)
    const tax = subtotal * 0.05
-   const discount = 50 
+   const discount = 50
    const grandTotal = subtotal + tax - discount
 
    const budget = trip.budget || 20000

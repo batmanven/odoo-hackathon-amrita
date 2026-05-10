@@ -22,7 +22,6 @@ export default async function Home() {
       <header className="fixed top-0 w-full z-50 border-b border-gray-100 bg-white/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
 
-          {/* LEFT */}
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#714B67] to-[#8A5B7F] flex items-center justify-center shadow-lg shadow-[#714B67]/20 transition-transform group-hover:scale-105">
@@ -35,7 +34,6 @@ export default async function Home() {
             </Link>
           </div>
 
-          {/* RIGHT */}
           <div className="flex items-center gap-4">
             {user ? (
               <>

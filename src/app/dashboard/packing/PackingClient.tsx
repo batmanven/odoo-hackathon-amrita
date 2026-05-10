@@ -178,15 +178,18 @@ export default function PackingClient({
             </button>
           )}
         </div>
-        <select
-          value={selectedTripId}
-          onChange={(e) => setSelectedTripId(e.target.value)}
-          className="h-14 px-5 rounded-2xl bg-white border-none shadow-sm text-sm font-bold text-gray-700 cursor-pointer min-w-[240px]"
-        >
-          {trips.map(t => (
-            <option key={t.id} value={t.id}>{t.title}</option>
-          ))}
-        </select>
+        <div className="relative min-w-[240px]">
+          <select
+            value={selectedTripId}
+            onChange={(e) => setSelectedTripId(e.target.value)}
+            className="h-14 w-full pl-5 pr-10 rounded-2xl bg-white shadow-sm text-sm font-bold text-gray-700 cursor-pointer appearance-none outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            {trips.map(t => (
+              <option key={t.id} value={t.id}>{t.title}</option>
+            ))}
+          </select>
+
+        </div>
       </section>
 
       <section className="space-y-3">
