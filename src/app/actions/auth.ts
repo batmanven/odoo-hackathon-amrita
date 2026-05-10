@@ -57,6 +57,7 @@ const registerSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
   avatarBase64: z.string().optional(),
   additionalInfo: z.string().optional(),
+  role: z.enum(['user', 'admin']).default('user'),
 })
 
 export async function signupAction(prevState: any, formData: FormData) {
@@ -70,6 +71,7 @@ export async function signupAction(prevState: any, formData: FormData) {
     password: formData.get('password') as string,
     avatarBase64: formData.get('avatarBase64') as string,
     additionalInfo: formData.get('additionalInfo') as string,
+    role: (formData.get('role') as string) || 'user',
   }
 
   const parsed = registerSchema.safeParse(data)
@@ -96,6 +98,7 @@ export async function signupAction(prevState: any, formData: FormData) {
       phone: data.phone || null,
       city: data.city || null,
       country: data.country || null,
+      role: data.role || 'user',
       avatarBase64: data.avatarBase64 || null,
       additionalInfo: data.additionalInfo || null,
     }
@@ -110,11 +113,11 @@ export async function signupAction(prevState: any, formData: FormData) {
 
 export async function resetPasswordAction(prevState: any, formData: FormData) {
   const email = formData.get('email') as string
-
+  
   if (!email || !z.string().email().safeParse(email).success) {
     return { error: 'Please enter a valid email address' }
   }
-
+  
   // Custom local logic for forgot password
   const user = await prisma.user.findUnique({ where: { email } })
   if (!user) {
