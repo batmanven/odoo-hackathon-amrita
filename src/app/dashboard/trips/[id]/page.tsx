@@ -43,7 +43,6 @@ interface Stop {
   activities: Activity[]
 }
 
-// ── Activity Item with working drag handle ──────────────────────────────────
 function ActivityItem({
   activity,
   onUpdate,
@@ -97,7 +96,6 @@ function ActivityItem({
   )
 }
 
-// ── Itinerary Stop Section ──────────────────────────────────────────────────
 function ItineraryStop({
   stop,
   index,
@@ -173,17 +171,14 @@ function ItineraryStop({
       className="relative group animate-in fade-in slide-in-from-bottom-4 duration-500"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      {/* Timeline line */}
       <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gray-100 rounded-full group-hover:bg-[#714B67]/20 transition-colors hidden md:block" />
 
       <Card className="rounded-[32px] border-none shadow-xl overflow-hidden bg-white hover:shadow-2xl transition-all duration-500">
         <div className="p-8 space-y-8">
-          {/* Header */}
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
             <div className="space-y-4 flex-1">
               <h3 className="text-2xl font-black text-gray-900 tracking-tight">Section {index + 1}</h3>
 
-              {/* City Search */}
               <div className="relative" ref={dropdownRef}>
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <Input
@@ -234,7 +229,6 @@ function ItineraryStop({
             </button>
           </div>
 
-          {/* Dates & Budget */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Travel Dates</label>
@@ -263,7 +257,6 @@ function ItineraryStop({
             </div>
           </div>
 
-          {/* Notes */}
           <div className="space-y-2">
             <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Section Notes</label>
             <div className="relative">
@@ -277,7 +270,6 @@ function ItineraryStop({
             </div>
           </div>
 
-          {/* Activities with WORKING Drag & Drop */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
               <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest">Planned Activities</h4>
@@ -319,7 +311,6 @@ function ItineraryStop({
   )
 }
 
-// ── Main Itinerary Builder Page ─────────────────────────────────────────────
 export default function ItineraryBuilderPage() {
   const params = useParams()
   const router = useRouter()
@@ -444,7 +435,6 @@ export default function ItineraryBuilderPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-20">
-      {/* Top Nav */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">

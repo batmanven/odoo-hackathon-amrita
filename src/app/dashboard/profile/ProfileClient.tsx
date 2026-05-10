@@ -64,13 +64,10 @@ export default function ProfileClient({ user }: { user: any }) {
 
   return (
     <div className="max-w-5xl mx-auto space-y-12 pb-20 pt-8 px-6">
-
-      {/* Premium Profile Header */}
       <section className="relative">
         <div className="absolute inset-0 bg-linear-to-tr from-[#714B67]/5 to-[#4CA5FF]/5 rounded-[40px] blur-3xl -z-10" />
         <Card className="relative bg-white rounded-[40px] border border-gray-100 shadow-2xl overflow-hidden p-8 sm:p-12">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
-            {/* Avatar Section */}
             <div className="relative group/avatar">
               <div className="w-36 h-36 rounded-3xl overflow-hidden shadow-2xl relative ring-4 ring-white">
                 {user.avatarBase64 ? (
@@ -91,8 +88,6 @@ export default function ProfileClient({ user }: { user: any }) {
                 <Compass className="w-5 h-5 text-white" />
               </div>
             </div>
-
-            {/* Info Section */}
             <div className="flex-1 space-y-6 text-center md:text-left w-full">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 {!isEditing ? (
@@ -171,7 +166,6 @@ export default function ProfileClient({ user }: { user: any }) {
         </Card>
       </section>
 
-      {/* 2 Clean Stat Cards */}
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <StatCard
           label="Total Trips"
@@ -187,9 +181,7 @@ export default function ProfileClient({ user }: { user: any }) {
         />
       </section>
 
-      {/* Trips Lists */}
       <div className="space-y-16">
-        {/* Preplanned Trips */}
         <section className="space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-black text-[#212529] tracking-tight">Upcoming Journeys</h2>
@@ -208,7 +200,6 @@ export default function ProfileClient({ user }: { user: any }) {
           </div>
         </section>
 
-        {/* Previous Trips */}
         <section className="space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-black text-[#212529] tracking-tight opacity-50">Past Explorations</h2>
@@ -224,7 +215,6 @@ export default function ProfileClient({ user }: { user: any }) {
         </section>
       </div>
 
-      {/* Danger Zone */}
       <section className="border border-red-100 rounded-[32px] p-8 space-y-4 bg-red-50/30">
         <div className="space-y-1">
           <h3 className="text-lg font-black text-red-600">Danger Zone</h3>

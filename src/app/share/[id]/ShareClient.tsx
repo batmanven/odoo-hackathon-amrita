@@ -19,6 +19,12 @@ import {
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { copyTripAction } from '@/app/actions/share'
+import { Caveat } from 'next/font/google'
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+})
 
 export default function ShareClient({ trip }: { trip: any }) {
   const [copied, setCopied] = useState(false)
@@ -57,9 +63,9 @@ export default function ShareClient({ trip }: { trip: any }) {
     }
   }
 
-  const handleShareTwitter = () => {
+  const handleShareX = () => {
     const text = `Check out this trip: ${trip.title}`
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank')
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank')
   }
 
   const handleShareWhatsApp = () => {
@@ -143,7 +149,7 @@ export default function ShareClient({ trip }: { trip: any }) {
             </Button>
             <Button
               variant="outline"
-              onClick={handleShareTwitter}
+              onClick={handleShareX}
               className="rounded-xl font-bold cursor-pointer h-12 px-6 border-gray-200 hover:bg-gray-50 text-gray-600"
             >
               Share on X
@@ -242,7 +248,7 @@ export default function ShareClient({ trip }: { trip: any }) {
         </section>
 
         <footer className="text-center py-8">
-          <p className="text-sm text-gray-400 font-medium">
+          <p className={`text-sm text-gray-400 font-medium ${caveat.className}`}>
             Powered by <Link href="/" className="text-primary font-bold hover:underline">Traveloop</Link>
           </p>
         </footer>
