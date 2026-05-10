@@ -14,13 +14,39 @@ import {
     Wallet,
     ArrowRight,
     X,
-    ArrowUpDown
+    ArrowUpDown,
+    Globe,
+    Lock,
+    Loader2
 } from 'lucide-react'
 import Link from 'next/link'
+import { Switch } from '@/components/ui/switch'
+import { toggleTripPublicAction } from '@/app/actions/trip'
+import { toast } from 'sonner'
 
 export default function ViewClient({ trip }: { trip: any }) {
     const [search, setSearch] = useState('')
     const [sortBy, setSortBy] = useState<'default' | 'cost' | 'name'>('default')
+    const [isPublic, setIsPublic] = useState(trip.isPublic)
+    const [isToggling, setIsToggling] = useState(false)
+
+    const handleTogglePublic = async (checked: boolean) => {
+        setIsToggling(true)
+        try {
+            const res = await toggleTripPublicAction(trip.id, checked)
+            if (res.success) {
+                setIsPublic(checked)
+                toast.success(checked ? 'Trip is now public!' : 'Trip is now private.')
+            } else {
+                toast.error(res.error || 'Failed to update visibility.')
+            }
+        } catch (err) {
+            console.error(err)
+            toast.error('An error occurred.')
+        } finally {
+            setIsToggling(false)
+        }
+    }
 
     const formatDate = (date: Date | string) => {
         return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(date))
@@ -30,7 +56,7 @@ export default function ViewClient({ trip }: { trip: any }) {
         let result = trip.stops.map((stop: any) => ({
             ...stop,
             activities: stop.activities.filter((act: any) =>
-                act.name.toLowerCase().includes(search.toLowerCase())
+                (act.name || '').toLowerCase().includes(search.toLowerCase())
             )
         })).filter((stop: any) =>
             stop.city.name.toLowerCase().includes(search.toLowerCase()) || stop.activities.length > 0
@@ -66,6 +92,24 @@ export default function ViewClient({ trip }: { trip: any }) {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-2xl border border-gray-100">
+                            {isToggling ? (
+                                <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                            ) : isPublic ? (
+                                <Globe className="w-4 h-4 text-emerald-500" />
+                            ) : (
+                                <Lock className="w-4 h-4 text-amber-500" />
+                            )}
+                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 min-w-[45px]">
+                                {isPublic ? 'Public' : 'Private'}
+                            </span>
+                            <Switch
+                                checked={isPublic}
+                                className='cursor-pointer'
+                                onCheckedChange={handleTogglePublic}
+                                disabled={isToggling}
+                            />
+                        </div>
                         <Link href={`/share/${trip.id}`} target="_blank">
                             <Button variant="outline" className="rounded-2xl px-6 font-bold border-gray-200 hover:bg-gray-50 text-gray-600 cursor-pointer">
                                 Share
@@ -192,7 +236,7 @@ export default function ViewClient({ trip }: { trip: any }) {
                                         ))}
                                         {stop.activities.length === 0 && (
                                             <div className="p-8 text-center bg-gray-50/50 rounded-[28px] border-2 border-dashed border-gray-100 text-gray-400 font-bold italic">
-                                                No activities match your search.
+                                                {search ? "No activities match your search." : "No activities planned for this stop yet."}
                                             </div>
                                         )}
                                     </div>

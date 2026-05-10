@@ -4,12 +4,13 @@ import { redirect } from 'next/navigation'
 import ViewClient from './ViewClient'
 
 
-export default async function TripViewPage({ params }: { params: { id: string } }) {
+export default async function TripViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   const session = await getSession()
   if (!session?.userId) redirect('/login')
 
   const trip = await prisma.trip.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       stops: {
         orderBy: { order: 'asc' },

@@ -86,6 +86,7 @@ export async function saveItineraryAction(tripId: string, stops: any[]) {
     })
 
     revalidatePath(`/dashboard/trips/${tripId}`)
+    revalidatePath(`/dashboard/trips/${tripId}/view`)
     revalidatePath('/dashboard/trips')
     return { success: true }
   } catch (error) {

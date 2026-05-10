@@ -5,7 +5,8 @@ import { Suspense } from 'react'
 import { Loader2 } from 'lucide-react'
 import TripsClient from './TripsClient'
 
-export default async function TripsPage({ searchParams }: { searchParams: { search?: string } }) {
+export default async function TripsPage({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
+  const { search } = await searchParams
   const session = await getSession()
   if (!session?.userId) redirect('/login')
 
@@ -21,7 +22,7 @@ export default async function TripsPage({ searchParams }: { searchParams: { sear
 
   return (
     <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}>
-      <TripsClient initialTrips={trips} initialSearch={searchParams.search} />
+      <TripsClient initialTrips={trips} initialSearch={search} />
     </Suspense>
   )
 }

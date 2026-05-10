@@ -131,7 +131,7 @@ export default function CreateTripPage() {
         toast.error(result.error)
       } else if (result.success) {
         toast.success('Trip created successfully!')
-        router.push('/dashboard')
+        router.push('/dashboard/trips')
       }
     })
   }

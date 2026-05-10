@@ -74,3 +74,21 @@ export async function createTripAction(prevState: any, formData: FormData) {
     return { error: 'Failed to create trip. Please try again.' }
   }
 }
+
+export async function toggleTripPublicAction(tripId: string, isPublic: boolean) {
+  const session = await getSession()
+  if (!session?.userId) return { error: 'Unauthorized' }
+
+  try {
+    await prisma.trip.update({
+      where: { id: tripId, userId: session.userId },
+      data: { isPublic }
+    })
+    revalidatePath(`/dashboard/trips/${tripId}/view`)
+    revalidatePath(`/share/${tripId}`)
+    return { success: true }
+  } catch (error) {
+    console.error('Toggle public error:', error)
+    return { error: 'Failed to update visibility.' }
+  }
+}

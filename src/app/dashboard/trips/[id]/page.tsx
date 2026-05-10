@@ -413,7 +413,7 @@ export default function ItineraryBuilderPage() {
     try {
       await saveItineraryAction(tripId, stops)
       toast.success('Itinerary saved successfully!')
-      router.refresh()
+      router.push(`/dashboard/trips/${tripId}/view`)
     } catch (err) {
       toast.error('Failed to save itinerary.')
       console.error(err)
