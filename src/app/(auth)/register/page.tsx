@@ -39,8 +39,8 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 py-12">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center">
-
-        <div
+        
+        <div 
           className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 cursor-pointer relative overflow-hidden group border-2 border-dashed border-primary/50 hover:border-primary transition-all"
           onClick={() => fileInputRef.current?.click()}
         >
@@ -55,12 +55,12 @@ export default function RegisterPage() {
         </div>
 
         <form action={formAction} className="w-full space-y-5">
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/*"
-            onChange={handleImageChange}
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            className="hidden" 
+            accept="image/*" 
+            onChange={handleImageChange} 
           />
           <input type="hidden" name="avatarBase64" value={avatarPreview || ''} />
           {state?.error && (
@@ -70,71 +70,84 @@ export default function RegisterPage() {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input
-              type="text"
+            <Input 
+              type="text" 
               name="firstName"
-              placeholder="First Name"
+              placeholder="First Name" 
               required
             />
-            <Input
-              type="text"
+            <Input 
+              type="text" 
               name="lastName"
-              placeholder="Last Name"
+              placeholder="Last Name" 
               required
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input
-              type="email"
+            <Input 
+              type="email" 
               name="email"
-              placeholder="Email Address"
+              placeholder="Email Address" 
               required
             />
-            <Input
-              type="tel"
+            <Input 
+              type="tel" 
               name="phone"
-              placeholder="Phone Number"
+              placeholder="Phone Number" 
               required
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input
-              type="text"
+            <Input 
+              type="text" 
               name="city"
-              placeholder="City"
+              placeholder="City" 
               required
             />
-            <Input
-              type="text"
+            <Input 
+              type="text" 
               name="country"
-              placeholder="Country"
+              placeholder="Country" 
               required
             />
           </div>
 
           <div>
-            <Input
-              type="password"
+            <Input 
+              type="password" 
               name="password"
-              placeholder="Password"
+              placeholder="Password" 
               required
               minLength={6}
             />
           </div>
 
-          <Textarea
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            <input
+              type="checkbox"
+              name="role"
+              value="admin"
+              id="admin-role"
+              className="w-5 h-5 rounded cursor-pointer accent-primary"
+            />
+            <label htmlFor="admin-role" className="text-sm font-medium text-gray-700 cursor-pointer">
+              Register as Admin
+            </label>
+          </div>
+
+          <Textarea 
             name="additionalInfo"
-            placeholder="Additional Information"
+            placeholder="Additional Information" 
             className="min-h-[120px] resize-none"
           />
-
-          <div className="pt-4 flex justify-center">
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="
+          
+         <div className="pt-4 flex justify-center">
+  <Button
+    type="submit"
+    disabled={isPending}
+    className="
       w-full md:w-auto px-12 py-6 text-md font-medium
       cursor-pointer
       transition-all duration-200
@@ -143,10 +156,10 @@ export default function RegisterPage() {
       active:scale-[0.98]
       disabled:cursor-not-allowed
     "
-            >
-              {isPending ? 'Creating Account...' : 'Register User'}
-            </Button>
-          </div>
+  >
+    {isPending ? 'Creating Account...' : 'Register User'}
+  </Button>
+</div>
         </form>
 
         <div className="mt-8 text-sm text-gray-600">
