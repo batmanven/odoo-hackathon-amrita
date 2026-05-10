@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { LogOut, ChevronDown, Map, UserCircle } from 'lucide-react'
+import { LogOut, ChevronDown, Map, UserCircle, Shield } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 
@@ -31,6 +31,7 @@ interface UserNavProps {
     lastName: string
     avatarBase64: string | null
     email: string
+    role?: string
   }
 }
 
@@ -80,6 +81,14 @@ export function UserNav({ user }: UserNavProps) {
               <span>My Trips</span>
             </DropdownMenuItem>
           </Link>
+          {user.role === 'admin' && (
+            <Link href="/dashboard/admin">
+              <DropdownMenuItem className="cursor-pointer font-medium py-2 px-4">
+                <Shield className="mr-2 h-4 w-4" />
+                <span>Admin Panel</span>
+              </DropdownMenuItem>
+            </Link>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50"

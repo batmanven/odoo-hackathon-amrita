@@ -13,7 +13,8 @@
     "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.17.3",
     "@prisma/adapter-libsql": "^7.8.0",
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^6.3.1",
+    "@prisma/config": "^6.3.1",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -49,7 +50,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
-    "prisma": "^5.22.0",
+    "prisma": "^6.3.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
