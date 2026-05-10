@@ -10,7 +10,6 @@ import {
   Users,
   MapPin,
   Ticket,
-  TrendingUp,
   X,
   Trash2,
   Loader2,

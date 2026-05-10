@@ -87,7 +87,7 @@ export default function CreateTripPage() {
           }))) as string[]
 
           updateSection(section.id, { suggestions: uniqueCities, isSearching: false })
-        } catch (error) {
+        } catch {
           updateSection(section.id, { suggestions: [], isSearching: false })
         }
       }
@@ -96,6 +96,7 @@ export default function CreateTripPage() {
       const timer = setTimeout(fetchSuggestions, 300)
       return () => clearTimeout(timer)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sections.map(s => s.query).join(',')])
 
   const updateSection = (id: string, updates: Partial<Section>) => {
@@ -196,7 +197,6 @@ export default function CreateTripPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-8 space-y-12">
-          {/* Main Info */}
           <CardWrapper className="bg-white/50 backdrop-blur-sm border-gray-100 shadow-xl">
             <div className="space-y-8">
               <div className="space-y-2">
@@ -228,12 +228,11 @@ export default function CreateTripPage() {
             </div>
           </CardWrapper>
 
-          {/* Itinerary Sections */}
           <div className="space-y-12">
             {sections.map((section, index) => (
               <div key={section.id} className="relative group">
                 <div className="absolute -left-16 top-0 bottom-0 w-px bg-gray-100 hidden md:block">
-                  <div className="absolute top-12 -left-[20px] w-12 h-12 rounded-2xl bg-white border-2 border-gray-100 shadow-xl flex items-center justify-center font-black text-[#714B67] text-lg">
+                  <div className="absolute top-12 left-[-20px] w-12 h-12 rounded-2xl bg-white border-2 border-gray-100 shadow-xl flex items-center justify-center font-black text-[#714B67] text-lg">
                     {index + 1}
                   </div>
                 </div>
@@ -252,7 +251,7 @@ export default function CreateTripPage() {
                   </div>
 
                   <div className="space-y-10">
-                    {/* Location */}
+
                     <div className="space-y-2">
                       <div className="relative">
                         <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
@@ -283,7 +282,6 @@ export default function CreateTripPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {/* Dates */}
                       <div className="space-y-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Travel Dates</label>
                         <Popover>
@@ -316,7 +314,6 @@ export default function CreateTripPage() {
                         </Popover>
                       </div>
 
-                      {/* Budget */}
                       <div className="space-y-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Section Budget</label>
                         <div className="relative">
@@ -332,7 +329,6 @@ export default function CreateTripPage() {
                       </div>
                     </div>
 
-                    {/* Planned Activities (Requested) */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between px-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Planned Activities</label>
@@ -366,8 +362,6 @@ export default function CreateTripPage() {
                         </div>
                       )}
                     </div>
-
-                    {/* Notes */}
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Section Notes</label>
                       <div className="relative">
@@ -392,7 +386,6 @@ export default function CreateTripPage() {
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="lg:col-span-4">
           <div className="sticky top-32 space-y-8">
             <CardWrapper className="bg-gray-900 border-none text-white overflow-hidden p-8 shadow-2xl relative">
