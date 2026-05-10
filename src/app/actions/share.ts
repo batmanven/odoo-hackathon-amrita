@@ -24,7 +24,7 @@ export async function copyTripAction(tripId: string) {
   const newTrip = await prisma.trip.create({
     data: {
       userId: session.userId,
-      title: `${original.title} (Copy)`,
+      title: original.title,
       startDate: original.startDate,
       endDate: original.endDate,
       budget: original.budget,

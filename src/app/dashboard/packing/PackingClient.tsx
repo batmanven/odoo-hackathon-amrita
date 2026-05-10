@@ -18,7 +18,8 @@ import {
   Smartphone,
   Pill,
   Briefcase,
-  Package
+  Package,
+  SlidersHorizontal
 } from 'lucide-react'
 import { toast } from 'sonner'
 import {
@@ -27,6 +28,7 @@ import {
   deletePackingItemAction,
   resetPackingListAction
 } from '@/app/actions/packing'
+import Link from 'next/link'
 
 interface PackingItem {
   id: string
@@ -147,7 +149,7 @@ export default function PackingClient({
 
   if (trips.length === 0) {
     return (
-      <div className="max-w-6xl mx-auto py-20 text-center px-4">
+      <div className="max-w-4xl mx-auto py-20 text-center px-4">
         <Package className="w-16 h-16 text-gray-200 mx-auto mb-6" />
         <h2 className="text-2xl font-black text-gray-900 mb-2">No Trips Yet</h2>
         <p className="text-gray-400 font-medium">Create a trip to start your packing checklist.</p>
@@ -156,175 +158,135 @@ export default function PackingClient({
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-20 pt-2 px-4">
-
-      <div className="space-y-2">
-        <h1 className="text-4xl font-black text-gray-900 tracking-tight">Packing Checklist</h1>
-        <p className="text-gray-500 font-medium text-lg">Stay organized and never forget the essentials</p>
-      </div>
+    <div className="max-w-4xl mx-auto space-y-10 pb-20 pt-6 px-4">
+      <header className="space-y-2">
+        <h1 className="text-4xl font-black text-gray-900 tracking-tight">Packing List</h1>
+        <p className="text-gray-500 font-medium">Keep track of everything you need for your trip.</p>
+      </header>
 
       <section className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search items..."
-            className="pl-14 pr-12 h-14 text-base bg-white border-none rounded-2xl shadow-sm focus-visible:ring-primary font-medium"
+            className="pl-12 h-14 bg-white border-gray-100 rounded-2xl shadow-sm focus-visible:ring-primary/20 font-medium"
           />
-          {query && (
-            <button onClick={() => setQuery('')} className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer">
-              <X className="h-5 w-5" />
-            </button>
-          )}
         </div>
-        <div className="relative min-w-[240px]">
-          <select
-            value={selectedTripId}
-            onChange={(e) => setSelectedTripId(e.target.value)}
-            className="h-14 w-full pl-5 pr-10 rounded-2xl bg-white shadow-sm text-sm font-bold text-gray-700 cursor-pointer appearance-none outline-none focus:ring-2 focus:ring-primary/20"
-          >
-            {trips.map(t => (
-              <option key={t.id} value={t.id}>{t.title}</option>
-            ))}
-          </select>
-
-        </div>
+        <select
+          value={selectedTripId}
+          onChange={(e) => setSelectedTripId(e.target.value)}
+          className="h-14 px-6 rounded-2xl bg-white border border-gray-100 shadow-sm font-bold text-gray-700 cursor-pointer outline-none focus:ring-2 focus:ring-primary/20"
+        >
+          {trips.map(t => (
+            <option key={t.id} value={t.id}>{t.title}</option>
+          ))}
+        </select>
       </section>
 
-      <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <p className="font-bold text-gray-700">
-            Progress: <span className="text-primary">{packedCount}/{totalCount}</span> items packed
+      <section className="bg-white p-6 rounded-3xl shadow-sm border border-gray-50 space-y-4">
+        <div className="flex justify-between items-end">
+          <p className="text-sm font-black text-gray-400 uppercase tracking-widest">
+            Progress: {packedCount}/{totalCount} items
           </p>
-          <p className="text-sm font-black text-gray-400">{progress.toFixed(0)}%</p>
+          <p className="text-sm font-black text-primary">{progress.toFixed(0)}%</p>
         </div>
-        <div className="relative h-4 bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-2 bg-gray-50 rounded-full overflow-hidden">
           <div
-            className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 bg-linear-to-r from-primary to-emerald-400"
+            className="h-full bg-primary transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
       </section>
 
-      <div className="space-y-8">
+      <div className="space-y-10">
         {CATEGORIES.map(cat => {
           const catItems = grouped[cat.key]
           if (!catItems || catItems.length === 0) return null
           const catPacked = catItems.filter(i => i.isPacked).length
 
           return (
-            <section key={cat.key} className="space-y-3">
-              <div className="flex items-center justify-between px-1">
+            <section key={cat.key} className="space-y-4">
+              <div className="flex items-center justify-between px-2">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg" style={{ backgroundColor: `${cat.color}15` }}>
-                    <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
-                  </div>
-                  <h3 className="font-black text-gray-900">{cat.label}</h3>
+                  <cat.icon className="w-5 h-5" style={{ color: cat.color }} />
+                  <h3 className="text-xl font-black text-gray-900">{cat.label}</h3>
                 </div>
-                <span className="text-sm font-black text-gray-400">{catPacked}/{catItems.length}</span>
+                <span className="text-xs font-black text-gray-400">{catPacked}/{catItems.length}</span>
               </div>
 
               <div className="space-y-2">
                 {catItems.map(item => (
-                  <Card
+                  <div
                     key={item.id}
-                    className={`p-4 rounded-2xl border-none shadow-sm flex items-center gap-4 group transition-all duration-300 cursor-pointer ${item.isPacked ? 'bg-gray-50' : 'bg-white hover:shadow-md'
-                      }`}
                     onClick={() => handleToggle(item)}
+                    className={`flex items-center gap-4 p-5 rounded-2xl border transition-all cursor-pointer group ${
+                      item.isPacked ? 'bg-gray-50 border-transparent' : 'bg-white border-gray-100 hover:border-primary/30'
+                    }`}
                   >
-                    <div className="transition-transform duration-200 hover:scale-110">
+                    <div className="shrink-0">
                       {item.isPacked ? (
-                        <CheckSquare className="w-5 h-5 text-primary" />
+                        <CheckSquare className="w-6 h-6 text-primary" />
                       ) : (
-                        <Square className="w-5 h-5 text-gray-300" />
+                        <Square className="w-6 h-6 text-gray-200 group-hover:text-primary transition-colors" />
                       )}
                     </div>
-                    <span className={`flex-1 font-medium transition-all duration-300 ${item.isPacked ? 'line-through text-gray-400' : 'text-gray-700'
-                      }`}>
+                    <span className={`flex-1 font-bold text-lg ${
+                      item.isPacked ? 'text-gray-300 line-through' : 'text-gray-700'
+                    }`}>
                       {item.name}
                     </span>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleDelete(item.id) }}
-                      disabled={deletingId === item.id}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-300 hover:text-red-500 cursor-pointer p-1"
+                      className="opacity-0 group-hover:opacity-100 p-2 text-gray-300 hover:text-red-500 transition-all"
                     >
-                      {deletingId === item.id
-                        ? <Loader2 className="w-4 h-4 animate-spin" />
-                        : <Trash2 className="w-4 h-4" />
-                      }
+                      <Trash2 className="w-4 h-4" />
                     </button>
-                  </Card>
+                  </div>
                 ))}
               </div>
             </section>
           )
         })}
-
-        {totalCount === 0 && !query && (
-          <div className="py-16 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-            <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-400 font-bold text-lg">No items yet.</p>
-            <p className="text-gray-300 font-medium text-sm mt-1">Add your first packing item below.</p>
-          </div>
-        )}
       </div>
 
-      {showAddForm && (
-        <Card className="p-6 rounded-2xl border-none shadow-lg bg-white space-y-4 animate-in fade-in slide-in-from-bottom-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-1 space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Category</label>
-              <select
-                value={newItemCategory}
-                onChange={(e) => setNewItemCategory(e.target.value)}
-                className="w-full h-12 px-3 rounded-xl bg-gray-50 border-none font-bold text-sm text-gray-700 cursor-pointer"
-              >
-                {CATEGORIES.map(c => (
-                  <option key={c.key} value={c.key}>{c.label}</option>
-                ))}
-              </select>
-            </div>
-            <div className="md:col-span-2 space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Item Name</label>
-              <div className="flex gap-3">
-                <Input
-                  value={newItemName}
-                  onChange={(e) => setNewItemName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
-                  placeholder="Passport, Sunscreen, Charger..."
-                  className="h-12 bg-gray-50 border-none rounded-xl font-bold flex-1"
-                />
-                <Button
-                  onClick={handleAdd}
-                  disabled={isAdding}
-                  className="rounded-xl font-bold cursor-pointer h-12 px-6"
-                >
-                  {isAdding ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add'}
-                </Button>
-              </div>
-            </div>
+      <div className="pt-6 flex flex-col gap-4">
+        <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4">
+          <select
+            value={newItemCategory}
+            onChange={(e) => setNewItemCategory(e.target.value)}
+            className="h-12 px-4 rounded-xl bg-gray-50 border-none font-bold text-sm text-gray-700 cursor-pointer outline-none"
+          >
+            {CATEGORIES.map(c => (
+              <option key={c.key} value={c.key}>{c.label}</option>
+            ))}
+          </select>
+          <div className="flex-1 flex gap-2">
+            <Input
+              value={newItemName}
+              onChange={(e) => setNewItemName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+              placeholder="Add item name..."
+              className="h-12 bg-gray-50 border-none rounded-xl font-bold flex-1"
+            />
+            <Button
+              onClick={handleAdd}
+              disabled={isAdding}
+              className="h-12 px-8 rounded-xl font-black bg-gray-900 hover:bg-black text-white"
+            >
+              {isAdding ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add'}
+            </Button>
           </div>
-        </Card>
-      )}
-
-      <section className="flex flex-wrap gap-3">
-        <Button
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="rounded-xl font-bold cursor-pointer h-12 px-6 bg-gray-900 hover:bg-gray-800 flex-1 md:flex-none"
-        >
-          <Plus className="w-4 h-4 mr-2" /> Add Item to Checklist
-        </Button>
+        </div>
         <Button
           variant="outline"
           onClick={handleReset}
-          disabled={isResetting || totalCount === 0}
-          className="rounded-xl font-bold cursor-pointer h-12 px-6 border-gray-200 text-gray-600 hover:bg-gray-50 flex-1 md:flex-none"
+          className="h-12 rounded-xl font-bold border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all"
         >
-          {isResetting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RotateCcw className="w-4 h-4 mr-2" />}
-          Reset All
+          <RotateCcw className="w-4 h-4 mr-2" /> Reset Entire List
         </Button>
-      </section>
+      </div>
     </div>
   )
 }

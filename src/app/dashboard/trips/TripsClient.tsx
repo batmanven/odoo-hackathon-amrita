@@ -4,9 +4,22 @@
 import { useState, useMemo } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, SlidersHorizontal, Plus, Calendar, MapPin, ArrowRight, X, ArrowUpDown } from 'lucide-react'
+import { Search, SlidersHorizontal, Plus, Calendar, MapPin, ArrowRight, X, ArrowUpDown, Trash2, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { deleteTripAction } from '@/app/actions/trip'
+import { toast } from 'sonner'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const formatDate = (date: Date | string) => {
     return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(date))
@@ -62,8 +75,47 @@ function TripSection({ title, trips }: { title: string; trips: any[] }) {
                                 </p>
                             </div>
 
-                            <div className="mt-8 flex items-center justify-end">
-                                <Button asChild className="rounded-2xl px-6 py-6 font-bold group/btn shadow-md hover:shadow-lg transition-all cursor-pointer">
+                            <div className="mt-8 flex items-center justify-end gap-3">
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            className="rounded-2xl h-14 w-14 text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer shadow-sm border border-gray-100 transition-colors"
+                                        >
+                                            <Trash2 className="h-5 w-5" />
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent className="rounded-[32px] border-none shadow-2xl p-8 max-w-md">
+                                        <AlertDialogHeader className="space-y-4">
+                                            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                <AlertCircle className="h-8 w-8 text-red-500" />
+                                            </div>
+                                            <AlertDialogTitle className="text-2xl font-black text-center text-gray-900 tracking-tight">
+                                                Delete this adventure?
+                                            </AlertDialogTitle>
+                                            <AlertDialogDescription className="text-center text-gray-500 font-medium leading-relaxed">
+                                                This will permanently remove <span className="font-bold text-gray-900">"{trip.title}"</span> and all its itinerary data. This action cannot be undone.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter className="mt-8 gap-3 sm:justify-center">
+                                            <AlertDialogCancel className="rounded-2xl h-14 px-8 font-bold border-gray-100 hover:bg-gray-50 cursor-pointer">
+                                                Keep Trip
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={async () => {
+                                                    const res = await deleteTripAction(trip.id)
+                                                    if (res.success) toast.success('Trip deleted')
+                                                    else toast.error(res.error || 'Failed to delete')
+                                                }}
+                                                className="rounded-2xl h-14 px-8 font-bold bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+                                            >
+                                                Delete Permanently
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+
+                                <Button asChild className="rounded-2xl px-8 h-14 font-bold group/btn shadow-md hover:shadow-lg transition-all cursor-pointer">
                                     <Link href={`/dashboard/trips/${trip.id}/view`} className="flex items-center gap-2">
                                         View Itinerary
                                         <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />

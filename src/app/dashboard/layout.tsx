@@ -31,6 +31,33 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               </div>
               <span className="text-2xl font-black tracking-tight text-[#1C1C1C]">Traveloop</span>
             </Link>
+
+            <nav className="hidden md:flex items-center gap-1 ml-4">
+              <Link
+                href="/dashboard/trips"
+                className="px-4 py-2 text-sm font-bold text-gray-500 hover:text-[#714B67] transition-colors"
+              >
+                My Trips
+              </Link>
+              <Link
+                href="/dashboard/explore"
+                className="px-4 py-2 text-sm font-bold text-gray-500 hover:text-[#714B67] transition-colors"
+              >
+                Explore
+              </Link>
+              <Link
+                href="/dashboard/community"
+                className="px-4 py-2 text-sm font-bold text-gray-500 hover:text-[#714B67] transition-colors"
+              >
+                Community
+              </Link>
+              <Link
+                href="/dashboard/packing"
+                className="px-4 py-2 text-sm font-bold text-gray-500 hover:text-[#714B67] transition-colors"
+              >
+                Packages
+              </Link>
+            </nav>
           </div>
 
           <div className="flex items-center gap-4">

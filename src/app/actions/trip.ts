@@ -92,3 +92,20 @@ export async function toggleTripPublicAction(tripId: string, isPublic: boolean) 
     return { error: 'Failed to update visibility.' }
   }
 }
+
+export async function deleteTripAction(tripId: string) {
+  const session = await getSession()
+  if (!session?.userId) return { error: 'Unauthorized' }
+
+  try {
+    await prisma.trip.delete({
+      where: { id: tripId, userId: session.userId }
+    })
+    revalidatePath('/dashboard/trips')
+    revalidatePath('/dashboard')
+    return { success: true }
+  } catch (error) {
+    console.error('Delete trip error:', error)
+    return { error: 'Failed to delete trip.' }
+  }
+}
