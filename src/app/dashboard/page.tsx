@@ -1,11 +1,11 @@
 import { getSession } from '@/utils/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, SlidersHorizontal, Plus, Wallet, Map, Users, Compass } from 'lucide-react'
+import { Plus, Wallet, Map, Compass } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import DashboardSearch from './DashboardSearch'
 
 export default async function DashboardPage() {
   const session = await getSession()
@@ -58,18 +58,18 @@ export default async function DashboardPage() {
             <span className="font-semibold text-gray-700 group-hover:text-primary transition-colors">My Trips</span>
           </Button>
         </Link>
-        <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-3 rounded-2xl border-gray-200 hover:border-primary/50 hover:bg-primary/5 transition-all shadow-sm cursor-pointer group">
-          <Compass className="h-6 w-6 text-gray-500 group-hover:text-primary transition-colors" />
-          <span className="font-semibold text-gray-700 group-hover:text-primary transition-colors">Discover Places</span>
-        </Button>
-        <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-3 rounded-2xl border-gray-200 hover:border-primary/50 hover:bg-primary/5 transition-all shadow-sm cursor-pointer group">
-          <Wallet className="h-6 w-6 text-gray-500 group-hover:text-primary transition-colors" />
-          <span className="font-semibold text-gray-700 group-hover:text-primary transition-colors">Track Expenses</span>
-        </Button>
-        <Button variant="outline" className="h-auto py-4 flex flex-col items-center justify-center gap-3 rounded-2xl border-gray-200 hover:border-primary/50 hover:bg-primary/5 transition-all shadow-sm cursor-pointer group">
-          <Users className="h-6 w-6 text-gray-500 group-hover:text-primary transition-colors" />
-          <span className="font-semibold text-gray-700 group-hover:text-primary transition-colors">Travel Buddies</span>
-        </Button>
+        <Link href="/dashboard/explore" className="h-auto">
+          <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center justify-center gap-3 rounded-2xl border-gray-200 hover:border-primary/50 hover:bg-primary/5 transition-all shadow-sm cursor-pointer group">
+            <Compass className="h-6 w-6 text-gray-500 group-hover:text-primary transition-colors" />
+            <span className="font-semibold text-gray-700 group-hover:text-primary transition-colors">Discover Places</span>
+          </Button>
+        </Link>
+        <Link href="/dashboard/budget" className="h-auto">
+          <Button variant="outline" className="w-full h-auto py-4 flex flex-col items-center justify-center gap-3 rounded-2xl border-gray-200 hover:border-primary/50 hover:bg-primary/5 transition-all shadow-sm cursor-pointer group">
+            <Wallet className="h-6 w-6 text-gray-500 group-hover:text-primary transition-colors" />
+            <span className="font-semibold text-gray-700 group-hover:text-primary transition-colors">Track Expenses</span>
+          </Button>
+        </Link>
       </section>
 
       <section>
@@ -97,26 +97,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      <section className="flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
-          <Input
-            placeholder="Search destinations, trips..."
-            className="pl-12 h-14 text-base bg-white border-gray-200 rounded-xl shadow-sm focus-visible:ring-primary cursor-text"
-          />
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="outline" className="h-14 px-6 rounded-xl border-gray-200 bg-white shadow-sm hover:bg-gray-50 text-gray-700 font-medium cursor-pointer">
-            Group by
-          </Button>
-          <Button variant="outline" className="h-14 px-6 rounded-xl border-gray-200 bg-white shadow-sm hover:bg-gray-50 text-gray-700 font-medium cursor-pointer">
-            <SlidersHorizontal className="mr-2 h-4 w-4" /> Filter
-          </Button>
-          <Button variant="outline" className="h-14 px-6 rounded-xl border-gray-200 bg-white shadow-sm hover:bg-gray-50 text-gray-700 font-medium cursor-pointer">
-            Sort by...
-          </Button>
-        </div>
-      </section>
+      <DashboardSearch />
 
       <section>
         <div className="flex items-center gap-4 mb-6">
@@ -126,13 +107,17 @@ export default async function DashboardPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {regions.map((region, i) => (
-            <div key={i} className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100">
+            <Link
+              key={i}
+              href={`/dashboard/explore?q=${encodeURIComponent(region.name.split(',')[0])}`}
+              className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100"
+            >
               <Image src={region.image} alt={region.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
               <div className="absolute bottom-5 left-5 right-5 text-white font-semibold text-lg tracking-wide">
                 {region.name}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
