@@ -15,7 +15,7 @@ async function decrypt(input: string) {
     }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const session = request.cookies.get('session')?.value
     const { pathname } = request.nextUrl
 
