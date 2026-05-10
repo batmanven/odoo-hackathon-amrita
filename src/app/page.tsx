@@ -103,7 +103,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Feature Section */}
       <section className="py-20 sm:py-32 px-6 bg-[#FDFCFD]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 sm:mb-24">
@@ -133,7 +132,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-16 sm:py-20 px-6 border-t border-gray-100 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 sm:gap-10">
           <div className="flex items-center gap-3">

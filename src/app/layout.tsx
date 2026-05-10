@@ -4,11 +4,11 @@ import "./globals.css";
 
 const raleway = Raleway({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "400"],
+  weight: ["500", "600", "700"],
 });
 export const metadata: Metadata = {
   title: "Traveloop",
-  description: "Traveloop",
+  description: "Traveloop - Travel is better together ",
 };
 
 import { Toaster } from "@/components/ui/sonner";
@@ -26,7 +26,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );
