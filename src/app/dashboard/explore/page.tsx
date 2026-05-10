@@ -2,6 +2,8 @@ import { getSession } from '@/utils/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import ExploreClient from './ExploreClient'
+import { Suspense } from 'react'
+import { Loader2 } from 'lucide-react'
 
 
 export default async function ExplorePage() {
@@ -14,5 +16,9 @@ export default async function ExplorePage() {
     select: { id: true, title: true }
   })
 
-  return <ExploreClient trips={trips} />
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}>
+      <ExploreClient trips={trips} />
+    </Suspense>
+  )
 }
