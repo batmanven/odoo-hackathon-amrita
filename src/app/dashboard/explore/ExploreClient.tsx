@@ -2,6 +2,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -49,7 +50,8 @@ const REGION_MAP: Record<string, string[]> = {
 }
 
 export default function ExploreClient({ trips }: { trips: { id: string; title: string }[] }) {
-  const [query, setQuery] = useState('')
+  const searchParams = useSearchParams()
+  const [query, setQuery] = useState(searchParams.get('q') || '')
   const [results, setResults] = useState<CityResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [selectedRegion, setSelectedRegion] = useState('All')
